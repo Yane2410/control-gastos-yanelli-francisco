@@ -13,6 +13,7 @@ Ideal para llevar el control financiero... ¡y hacerlo con amor! ✨
 ✅ Agrupación automática por categoría  
 ✅ Total gastado al pie  
 ✅ Eliminación de gastos con botón 🗑️  
+✅ Editar los gastos con botón ✏️
 ✅ Mensaje mágico al guardar: *"Guardado con amor 💖"*  
 ✅ Diseño **responsivo** adaptable a móviles y notebooks  
 ✅ Persistencia con `localStorage` para no perder los datos al recargar
