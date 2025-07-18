@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Formulario from './components/Formulario';
 import ListaGastos from './components/ListaGastos';
 
@@ -9,11 +9,16 @@ function App() {
   });
 
   const [gastoEditando, setGastoEditando] = useState(null);
+  const formularioRef = useRef(null);
+
+  const scrollToFormulario = () => {
+    if (formularioRef.current) {
+      formularioRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
-    if (Array.isArray(gastos)) {
-      localStorage.setItem('gastos', JSON.stringify(gastos));
-    }
+    localStorage.setItem('gastos', JSON.stringify(gastos));
   }, [gastos]);
 
   const total = gastos.reduce((acc, gasto) => acc + Number(gasto.monto || 0), 0);
@@ -30,12 +35,14 @@ function App() {
           setGastos={setGastos}
           gastoEditando={gastoEditando}
           setGastoEditando={setGastoEditando}
+          refFormulario={formularioRef}
         />
 
         <ListaGastos
           gastos={gastos}
           setGastos={setGastos}
           setGastoEditando={setGastoEditando}
+          scrollToFormulario={scrollToFormulario}
         />
 
         <div className="mt-4 text-end">

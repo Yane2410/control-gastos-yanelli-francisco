@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ListaGastos({ gastos, setGastos, setGastoEditando }) {
+function ListaGastos({ gastos, setGastos, setGastoEditando, scrollToFormulario }) {
   const eliminarGasto = (id) => {
     const confirmacion = window.confirm('¿Seguro que deseas eliminar este gasto?');
     if (confirmacion) {
@@ -32,9 +32,12 @@ function ListaGastos({ gastos, setGastos, setGastoEditando }) {
               <div className="col" key={gasto.id}>
                 <div className="card position-relative h-100 shadow-sm">
 
-                  {/* Botón Editar (esquina superior izquierda) */}
+                  {/* Botón Editar */}
                   <button
-                    onClick={() => setGastoEditando(gasto)}
+                    onClick={() => {
+                      setGastoEditando(gasto);
+                      scrollToFormulario();
+                    }}
                     className="btn btn-outline-primary btn-sm position-absolute top-0 start-0 m-2"
                     aria-label="Editar"
                     title="Editar gasto"
@@ -43,7 +46,7 @@ function ListaGastos({ gastos, setGastos, setGastoEditando }) {
                     ✏️
                   </button>
 
-                  {/* Botón Eliminar (esquina superior derecha) */}
+                  {/* Botón Eliminar */}
                   <button
                     onClick={() => eliminarGasto(gasto.id)}
                     className="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-2"

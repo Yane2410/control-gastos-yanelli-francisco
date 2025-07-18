@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Formulario({ gastos, setGastos, gastoEditando, setGastoEditando }) {
+function Formulario({ gastos, setGastos, gastoEditando, setGastoEditando, refFormulario }) {
   const [monto, setMonto] = useState('');
   const [categoria, setCategoria] = useState('');
   const [descripcion, setDescripcion] = useState('');
@@ -13,40 +13,38 @@ function Formulario({ gastos, setGastos, gastoEditando, setGastoEditando }) {
     }
   }, [gastoEditando]);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  if (!monto || !categoria || !descripcion) {
-    alert('Por favor completa todos los campos');
-    return;
-  }
+    if (!monto || !categoria || !descripcion) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
 
-  const gastoFormateado = {
-    id: gastoEditando ? gastoEditando.id : Date.now(),
-    monto: Number(monto),
-    categoria,
-    descripcion,
+    const gastoFormateado = {
+      id: gastoEditando ? gastoEditando.id : Date.now(),
+      monto: Number(monto),
+      categoria,
+      descripcion,
+    };
+
+    if (gastoEditando) {
+      const gastosActualizados = gastos.map((gasto) =>
+        gasto.id === gastoEditando.id ? gastoFormateado : gasto
+      );
+      setGastos(gastosActualizados);
+      setGastoEditando(null);
+    } else {
+      setGastos([...gastos, gastoFormateado]);
+    }
+
+    setMonto('');
+    setCategoria('');
+    setDescripcion('');
   };
 
-  if (gastoEditando) {
-    const gastosActualizados = gastos.map((gasto) =>
-      gasto.id === gastoEditando.id ? gastoFormateado : gasto
-    );
-    setGastos(gastosActualizados);
-    setGastoEditando(null);
-  } else {
-    setGastos([...gastos, gastoFormateado]);
-  }
-
-  // Reset del formulario
-  setMonto('');
-  setCategoria('');
-  setDescripcion('');
-};
-
-
   return (
-    <form onSubmit={handleSubmit} className="border p-4 rounded bg-white shadow mb-4">
+    <form ref={refFormulario} onSubmit={handleSubmit} className="border p-4 rounded bg-white shadow mb-4">
       <div className="mb-3">
         <label className="form-label">Monto:</label>
         <input
