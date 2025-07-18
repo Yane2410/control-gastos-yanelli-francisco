@@ -1,19 +1,18 @@
 import React from 'react';
 
-function ListaGastos({ gastos, setGastos }) {
+function ListaGastos({ gastos, setGastos, setGastoEditando }) {
   const eliminarGasto = (id) => {
-  const confirmacion = window.confirm('¿Seguro que deseas eliminar este gasto?');
-  if (confirmacion) {
-    const gastosActualizados = gastos.filter((gasto) => gasto.id !== id);
-    setGastos(gastosActualizados);
-  }
-};
+    const confirmacion = window.confirm('¿Seguro que deseas eliminar este gasto?');
+    if (confirmacion) {
+      const gastosActualizados = gastos.filter((gasto) => gasto.id !== id);
+      setGastos(gastosActualizados);
+    }
+  };
 
-  if (gastos.length === 0) {
+  if (!gastos || gastos.length === 0) {
     return <p className="text-center mt-4 text-muted">No hay gastos registrados aún.</p>;
   }
 
-  // Agrupar por categoría
   const gastosPorCategoria = gastos.reduce((acc, gasto) => {
     if (!acc[gasto.categoria]) {
       acc[gasto.categoria] = [];
@@ -32,6 +31,19 @@ function ListaGastos({ gastos, setGastos }) {
             {gastosPorCategoria[categoria].map((gasto) => (
               <div className="col" key={gasto.id}>
                 <div className="card position-relative h-100 shadow-sm">
+
+                  {/* Botón Editar (esquina superior izquierda) */}
+                  <button
+                    onClick={() => setGastoEditando(gasto)}
+                    className="btn btn-outline-primary btn-sm position-absolute top-0 start-0 m-2"
+                    aria-label="Editar"
+                    title="Editar gasto"
+                    style={{ fontSize: '1.2rem', padding: '0.25rem 0.5rem' }}
+                  >
+                    ✏️
+                  </button>
+
+                  {/* Botón Eliminar (esquina superior derecha) */}
                   <button
                     onClick={() => eliminarGasto(gasto.id)}
                     className="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-2"
@@ -41,7 +53,8 @@ function ListaGastos({ gastos, setGastos }) {
                   >
                     🗑️
                   </button>
-                  <div className="card-body d-flex flex-column justify-content-between">
+
+                  <div className="card-body d-flex flex-column justify-content-between mt-4">
                     <p className="card-text">{gasto.descripcion}</p>
                     <div className="text-end">
                       <span className="badge bg-primary fs-6">
@@ -49,6 +62,7 @@ function ListaGastos({ gastos, setGastos }) {
                       </span>
                     </div>
                   </div>
+
                 </div>
               </div>
             ))}

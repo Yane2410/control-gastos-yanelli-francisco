@@ -3,22 +3,20 @@ import Formulario from './components/Formulario';
 import ListaGastos from './components/ListaGastos';
 
 function App() {
-  const [gastos, setGastos] = useState(null);
+  const [gastos, setGastos] = useState(() => {
+    const guardados = localStorage.getItem('gastos');
+    return guardados ? JSON.parse(guardados) : [];
+  });
+
+  const [gastoEditando, setGastoEditando] = useState(null);
 
   useEffect(() => {
-    const gastosGuardados = JSON.parse(localStorage.getItem('gastos')) || [];
-    setGastos(gastosGuardados);
-  }, []);
-
-  useEffect(() => {
-    if (gastos !== null) {
+    if (Array.isArray(gastos)) {
       localStorage.setItem('gastos', JSON.stringify(gastos));
     }
   }, [gastos]);
 
-  if (gastos === null) return <p className="text-center mt-5">Cargando gastos...</p>;
-
-  const total = gastos.reduce((acc, gasto) => acc + Number(gasto.monto), 0);
+  const total = gastos.reduce((acc, gasto) => acc + Number(gasto.monto || 0), 0);
 
   return (
     <div className="container my-5 d-flex justify-content-center">
@@ -27,8 +25,18 @@ function App() {
           💸 Control de Gastos Personales
         </h1>
 
-        <Formulario gastos={gastos} setGastos={setGastos} />
-        <ListaGastos gastos={gastos} setGastos={setGastos} />
+        <Formulario
+          gastos={gastos}
+          setGastos={setGastos}
+          gastoEditando={gastoEditando}
+          setGastoEditando={setGastoEditando}
+        />
+
+        <ListaGastos
+          gastos={gastos}
+          setGastos={setGastos}
+          setGastoEditando={setGastoEditando}
+        />
 
         <div className="mt-4 text-end">
           <h5 className="text-success">
