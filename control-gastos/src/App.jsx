@@ -28,7 +28,7 @@ function App() {
         </h1>
 
         <Formulario gastos={gastos} setGastos={setGastos} />
-        <ListaGastos gastos={gastos} />
+        <ListaGastos gastos={gastos} setGastos={setGastos} />
 
         <div className="mt-4 text-end">
           <h5 className="text-success">

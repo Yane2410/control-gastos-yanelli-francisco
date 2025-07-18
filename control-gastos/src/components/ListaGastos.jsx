@@ -2,12 +2,12 @@ import React from 'react';
 
 function ListaGastos({ gastos, setGastos }) {
   const eliminarGasto = (id) => {
-    const confirmacion = window.confirm('¿Seguro que deseas eliminar este gasto?');
-    if (confirmacion) {
-      const gastosActualizados = gastos.filter((gasto) => gasto.id !== id);
-      setGastos(gastosActualizados);
-    }
-  };
+  const confirmacion = window.confirm('¿Seguro que deseas eliminar este gasto?');
+  if (confirmacion) {
+    const gastosActualizados = gastos.filter((gasto) => gasto.id !== id);
+    setGastos(gastosActualizados);
+  }
+};
 
   if (gastos.length === 0) {
     return <p className="text-center mt-4 text-muted">No hay gastos registrados aún.</p>;
